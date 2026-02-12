@@ -56,7 +56,10 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
             "❝ধন্যবাদ❞🥰")
     
     keyboard = [
-        [InlineKeyboardButton("✅𝗢𝗽𝗲𝗻 𝗡𝗼𝘄✅", url="https://mini-app2-pi.vercel.app/")],
+        [InlineKeyboardButton(
+            "✅𝗢𝗽𝗲𝗻 𝗡𝗼𝘄✅", 
+            web_app=WebAppInfo(url="https://mini-app2-pi.vercel.app/")
+        )],
         [InlineKeyboardButton("✅𝗢𝗽𝗲𝗻 𝗧𝘂𝘁𝗼𝗿𝗶𝗮𝗹✅", url="https://t.me/fojik_earn/17")]
     ]
     await update.message.reply_text(text, reply_markup=InlineKeyboardMarkup(keyboard))
