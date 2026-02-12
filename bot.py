@@ -3,10 +3,11 @@ import logging
 import os
 import threading
 from flask import Flask
-from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup
+# এখানে WebAppInfo ইমপোর্ট করা হয়েছে, যা আগে মিসিং ছিল
+from telegram import Update, InlineKeyboardButton, InlineKeyboardMarkup, WebAppInfo 
 from telegram.ext import ApplicationBuilder, CommandHandler, ContextTypes
 
-# ১. ফ্ল্যাস্ক (Flask) সেটআপ (রেন্ডারকে সচল রাখার জন্য)
+# ১. ফ্ল্যাস্ক (Flask) সেটআপ
 server = Flask(__name__)
 
 @server.route('/')
@@ -40,7 +41,7 @@ def get_all_users():
     conn.close()
     return users
 
-# ৩. কমান্ড হ্যান্ডলার (আপনার স্ক্রিনশটের স্টাইল অনুযায়ী)
+# ৩. কমান্ড হ্যান্ডলার
 async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_id = update.effective_user.id
     add_user(user_id)
@@ -55,6 +56,7 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
             "﻿♻️নিচের 𝗢𝗽𝗲𝗻 𝗡𝗼𝘄 এ ক্লিক করে,সহজেই আয় করা শুরু করুন!\n"
             "❝ধন্যবাদ❞🥰")
     
+    # এটি এখন সরাসরি টেলিগ্রামের ভেতরে অ্যাপটি ওপেন করবে
     keyboard = [
         [
             InlineKeyboardButton(
@@ -80,7 +82,6 @@ async def broadcast(update: Update, context: ContextTypes.DEFAULT_TYPE):
         target_msg = update.message.reply_to_message
         users = get_all_users()
         
-        # বাটন এবং লিঙ্ক আলাদা করা (বিকল্প)
         cmd_text = update.message.text.replace('/broadcast', '').strip()
         custom_markup = None
         
@@ -111,7 +112,6 @@ async def broadcast(update: Update, context: ContextTypes.DEFAULT_TYPE):
 # ৪. মেইন রানার
 if __name__ == '__main__':
     init_db()
-    # ফ্ল্যাস্ক রান করা
     threading.Thread(target=run_flask).start()
     
     TOKEN = "8584041971:AAGo2IcR2rE7mVWFUIXEh8F10Ld0jSMok-I" 
