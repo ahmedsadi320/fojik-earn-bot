@@ -102,3 +102,12 @@ if __name__ == '__main__':
     
     print("বটটি সফলভাবে চালু হয়েছে...")
     app.run_polling()
+    import os
+from flask import Flask
+app = Flask(__name__)
+@app.route('/')
+def hello(): return "Bot is running!"
+if __name__ == "__main__":
+    # আপনার বটের মেইন রানার এখানে থাকবে
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host='0.0.0.0', port=port)
