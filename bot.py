@@ -45,18 +45,17 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
     user_id = user.id
     first_name = user.first_name or "User"
 
-    add_user(user_id)
-
-    # referral id from /start param
-    ref = None
+    # রেফারাল আইডি চেক করা
+    ref_id = None
     if context.args and len(context.args) > 0:
-        ref = context.args[0]
+        ref_id = context.args[0]
 
+    # মিনি অ্যাপের লিঙ্ক তৈরি (startapp প্যারামিটার সহ)
     base_url = "https://mini-app2-pi.vercel.app/"
-
-    # prevent self referral
-    if ref and str(ref) != str(user_id):
-        app_url = f"{base_url}?startapp={ref}"
+    
+    # ইউজার যদি রেফারেল লিঙ্কে আসে, তবে startapp আইডি যোগ হবে
+    if ref_id and str(ref_id) != str(user_id):
+        app_url = f"{base_url}?startapp={ref_id}"
     else:
         app_url = base_url
 
@@ -72,10 +71,8 @@ async def start(update: Update, context: ContextTypes.DEFAULT_TYPE):
         [InlineKeyboardButton("🎬 Tutorial", url="https://t.me/fojik_earn/17")]
     ]
 
-    await update.message.reply_text(
-        text,
-        reply_markup=InlineKeyboardMarkup(keyboard)
-    )
+    await update.message.reply_text(text, reply_markup=InlineKeyboardMarkup(keyboard))
+    
 
 # ---------- BROADCAST ----------
 async def broadcast(update: Update, context: ContextTypes.DEFAULT_TYPE):
